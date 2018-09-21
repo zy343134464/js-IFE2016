@@ -1,0 +1,153 @@
+<!DOCTYPE>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>IFE JavaScript Task 02</title>
+    <style>
+      #leftIn,
+      #rightIn,
+      #leftOut,
+      #rightOut {
+        margin:2px 4px;
+        border: 1px solid #ddd;
+        background: white;
+      }
+      #rightIn {
+        margin-right: 20px;
+      }
+      .numContent{
+        height: 40px;
+      }
+      span{
+        height: 30px;
+        display: inline-block;
+        text-align: center;
+        color: white;
+        background-color: red;
+        padding: 0 10px;
+        padding-top: 10px;
+        margin-right: 10px;
+      }
+    </style>
+  </head>
+<body>
+  <input type="text" id="num">
+  <button id="leftIn">左侧入</button><button id="rightIn">右侧入</button>
+  <button id="leftOut">左侧出</button><button id="rightOut">右侧出</button>
+  
+  <div id="numContent">
+    
+  </div>
+
+  <script>
+    //事件绑定函数，兼容浏览器差异
+    function addEvent(element, event, listener) {
+      if (element.addEventListener) {
+        element.addEventListener(event, listener, false);
+      }
+      else if (element.attachEvent) {
+        element.attachEvent("on" + event, listener);
+      }
+      else {
+        element["on" + event] = listener;
+      }
+    }
+
+    // 复用id选择器
+    function $(id){
+      return document.getElementById(id);
+    }
+
+    //遍历数组的方法，针对数组中每一个元素执行fn函数，并将数组索引和元素作为参数传递
+    function each(arr, fn) {
+      for (var cur = 0; cur < arr.length; cur++) {
+        fn(arr[cur]);
+      }
+    }
+
+    var queue = {
+      str: [],
+      paint: function(){
+        var html = '';
+        each(this.str,function(item){
+          html += "<span>"+parseInt(item)+"</span>"
+        })
+        $('numContent').innerHTML = html;
+        addDivDelEvent();
+      },
+      leftPush: function(num){
+        this.str.unshift(num)
+        this.paint();
+      },
+      rightPush: function(num) {
+        this.str.push(num);
+        this.paint();
+      },
+      isEmpty: function(){
+        return this.str.length == 0;
+      },
+      leftPop: function() {
+        if (!this.isEmpty()) {
+          alert(this.str.shift());
+          this.paint();
+        }
+        else {
+          alert("队列已经是空的!");
+        }
+      },
+      rightPop: function() {
+        if (!this.isEmpty()) {
+          alert(this.str.pop());
+          this.paint();
+        }
+        else {
+          alert("队列已经是空的!");
+        }
+      },
+      deleteID: function(id) {
+        this.str.splice(id, 1);
+        this.paint();
+      }
+    }
+
+    // 为numContent中的每个span绑定删除函数
+    function addDivDelEvent() {
+      for (var cur = 0; cur < $('numContent').childNodes.length; cur++) {
+        // 这里要使用闭包，否则永远绑定到指定span上的delete函数的cur永远等于跳出循环时的cur值(length)
+        addEvent($('numContent').childNodes[cur], "click", function(cur) {
+          return function(){
+            return queue.deleteID(cur)
+          }
+        }(cur))
+      }
+    }
+
+    // 4个按钮分别绑定事件函数
+    addEvent($("leftIn"),'click',function(){
+      var num = $('num').value;
+      if((/^[0-9]+$/).test(num)){
+        queue.leftPush(num)
+      }else{
+        alert("请输入一个整数!")
+      }
+    })
+
+    addEvent($("rightIn"),'click',function(){
+      var num = $('num').value;
+      if((/^[0-9]+$/).test(num)){
+        queue.rightPush(num)
+      }else{
+        alert("请输入一个整数!")
+      }
+    })
+
+    addEvent($("leftOut"),'click',function(){
+      queue.leftPop()
+    })
+
+    addEvent($("rightOut"),'click',function(){
+      queue.rightPop()
+    })
+  </script>
+</body>
+</html>
