@@ -132,3 +132,5 @@ init();
 [MDN JavaScript](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript)
 
 # 预览
+
+[任务16](https://zy343134464.github.io/js-IFE2016/task16/task.html)

@@ -65,3 +65,4 @@ JavaScript初体验
 
 # 预览
 
+[任务13](https://zy343134464.github.io/js-IFE2016/task13/task.html)

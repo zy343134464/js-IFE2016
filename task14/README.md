@@ -75,3 +75,5 @@ var aqiData = [
 [MDN JavaScript](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript)
 
 # 预览
+
+[任务14](https://zy343134464.github.io/js-IFE2016/task14/task.html)

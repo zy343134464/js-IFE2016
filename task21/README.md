@@ -51,3 +51,5 @@ Tag不能有重复的，遇到重复输入的Tag，自动忽视
 [MDN JavaScript](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript)
 
 # 预览
+
+[任务21](https://zy343134464.github.io/js-IFE2016/task21/task.html)
