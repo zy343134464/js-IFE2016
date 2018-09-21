@@ -1,0 +1,190 @@
+<!DOCTYPE>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>IFE JavaScript Task 02</title>
+    <style>
+      button {
+        margin:2px 4px;
+        border: 1px solid #ddd;
+        background: white;
+      }
+      #numContent {
+        display: flex;
+        width: 500px;
+        height: 150px;
+        align-items: flex-end;
+      }
+
+      #numContent span {
+        padding: 0 15px;
+        margin-right: 10px;               
+        background-color: red;
+      }
+    </style>
+  </head>
+<body>
+  <input type="text" id="num">
+  <button id="leftIn">左侧入</button><button id="rightIn">右侧入</button>
+  <button id="leftOut">左侧出</button><button id="rightOut">右侧出</button>
+  <button id="sortBtn">队列排序</button>
+  
+  <div id="numContent">
+    
+  </div>
+
+  <script>
+    //事件绑定函数，兼容浏览器差异
+    function addEvent(element, event, listener) {
+      if (element.addEventListener) {
+        element.addEventListener(event, listener, false);
+      }
+      else if (element.attachEvent) {
+        element.attachEvent("on" + event, listener);
+      }
+      else {
+        element["on" + event] = listener;
+      }
+    }
+
+    // 复用id选择器
+    function $(id){
+      return document.getElementById(id);
+    }
+
+    //遍历数组的方法，针对数组中每一个元素执行fn函数，并将数组索引和元素作为参数传递
+    function each(arr, fn) {
+      for (var cur = 0; cur < arr.length; cur++) {
+        fn(arr[cur]);
+      }
+    }
+
+    var queue = {
+      str: [],
+      paint: function(){
+        var html = '';
+        each(this.str,function(item){
+          html += "<span style='height:"+parseInt(item)+"'></span>"
+        })
+        $('numContent').innerHTML = html;
+        addDivDelEvent();
+      },
+      leftPush: function(num){
+        if (this.str.length >= 60) {
+          alert("队列元素数量最多为60个!");
+        }else{
+          this.str.unshift(num);
+          this.paint();
+        }
+      },
+      rightPush: function(num) {
+        if (this.str.length >= 60) {
+          alert("队列元素数量最多为60个!");
+        }else{
+          this.str.push(num);
+          this.paint();
+        }
+      },
+      isEmpty: function(){
+        return this.str.length == 0;
+      },
+      leftPop: function() {
+        if (!this.isEmpty()) {
+          alert(this.str.shift());
+          this.paint();
+        }
+        else {
+          alert("队列已经是空的!");
+        }
+      },
+      rightPop: function() {
+        if (!this.isEmpty()) {
+          alert(this.str.pop());
+          this.paint();
+        }
+        else {
+          alert("队列已经是空的!");
+        }
+      },
+      deleteID: function(id) {
+        this.str.splice(id, 1);
+        this.paint();
+      },
+      // 冒泡排序
+      sortElements:function(){
+        var Clock;
+        var count = 0, i = 0;
+        Clock = setInterval(function() {
+          if (count >= this.str.length) {
+            clearInterval(Clock);
+          }
+          if (i == this.str.length - 1 - count) {
+            i = 0;
+            count++;
+          }
+          if (this.str[i] > this.str[i + 1]) {
+            var temp = this.str[i];
+            this.str[i] = this.str[i + 1];
+            this.str[i + 1] = temp;
+            this.paint();
+          }
+          i++;
+        }.bind(this), 100);
+      }
+    }
+
+    // 为numContent中的每个span绑定删除函数
+    function addDivDelEvent() {
+      for (var cur = 0; cur < $('numContent').childNodes.length; cur++) {
+        // 使用立即执行函数,来解决闭包的影响
+        addEvent($('numContent').childNodes[cur], "click", function(cur) {
+          return function(){
+            return queue.deleteID(cur)
+          }
+        }(cur))
+      }
+    }
+
+    // 4个按钮分别绑定事件函数
+    addEvent($("leftIn"),'click',function(){
+      var num = $('num').value;
+      if((/^[0-9]+$/).test(num)){
+        // 限制输入的数字在10-100
+        if (parseInt(num) < 10 || parseInt(num) > 100) {
+          alert("输入的数字必须在10-100之间!")
+        }else{
+          queue.leftPush(num)
+        }
+      }else{
+        alert("请输入一个整数!")
+      }
+    })
+
+    addEvent($("rightIn"),'click',function(){
+      var num = $('num').value;
+      if((/^[0-9]+$/).test(num)){
+        // 限制输入的数字在10-100
+        if (parseInt(num) < 10 || parseInt(num) > 100) {
+          alert("输入的数字必须在10-100之间!")
+        }else{
+          queue.rightPush(num)
+        }
+      }else{
+        alert("请输入一个整数!")
+      }
+    })
+
+    addEvent($("leftOut"),'click',function(){
+      queue.leftPop()
+    })
+
+    addEvent($("rightOut"),'click',function(){
+      queue.rightPop()
+    })
+
+    addEvent($("sortBtn"),'click',function(){
+      queue.sortElements()
+    })
+  </script>
+</body>
+</html>
