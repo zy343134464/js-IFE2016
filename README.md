@@ -1,4 +1,4 @@
-# IEF2016任务预览
+# IEF2016的JavaScript任务预览
 
 [任务13](https://zy343134464.github.io/js-IFE2016/task13/task.html)
 
